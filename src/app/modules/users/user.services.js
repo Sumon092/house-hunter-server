@@ -1,7 +1,9 @@
 const User = require("./user.model");
+const bcrypt = require("bcrypt");
 
 async function createUser(userData) {
   try {
+    const { email, password } = userData;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
@@ -13,10 +15,11 @@ async function createUser(userData) {
       fullName: userData.fullName,
       role: userData.role,
       phoneNumber: userData.phoneNumber,
-      email: userData.email,
+      email: email,
       password: hashedPassword,
     });
     await user.save();
+    return user;
   } catch (error) {
     throw new Error("Failed to create user");
   }
