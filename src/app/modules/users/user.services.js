@@ -36,7 +36,6 @@ async function loginUser(email, password) {
     throw new Error("Invalid email or password");
   }
   const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
-  console.log({ token });
   return token;
 }
 
