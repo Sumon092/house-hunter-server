@@ -1,11 +1,14 @@
+const { default: mongoose } = require("mongoose");
 const userService = require("../users/user.services");
 const houseService = require("./owner.services");
 
 async function addHouse(req, res) {
   try {
     const houseData = req.body;
-    const userId = req.user._id;
-    const house = await houseService.addHouseService(houseData, userId);
+    const ownerId = req.user.userId;
+    const objectId = new mongoose.Types.ObjectId(ownerId);
+    console.log({ ownerId });
+    const house = await houseService.addHouseService(houseData, objectId);
 
     res.json({
       status: 200,

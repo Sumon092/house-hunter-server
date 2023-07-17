@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  ownedHouses: [{ type: mongoose.Schema.Types.ObjectId, ref: "House" }],
 });
 
 const User = mongoose.model("User", userSchema);

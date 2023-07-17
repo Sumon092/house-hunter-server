@@ -51,10 +51,7 @@ const houseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  ownedHouses: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 const House = mongoose.model("House", houseSchema);
