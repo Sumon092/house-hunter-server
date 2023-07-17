@@ -4,5 +4,6 @@ const verifyToken = require("../../middleware/verifyToken.js");
 const ownerController = require("./owner.controller.js");
 
 router.post("/addHouse", ownerController.addHouse);
+router.get("/getHouse", ownerController.getAllHouses);
 
 module.exports = router;
