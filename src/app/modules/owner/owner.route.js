@@ -5,5 +5,6 @@ const ownerController = require("./owner.controller.js");
 
 router.post("/addHouse", ownerController.addHouse);
 router.get("/getHouse", ownerController.getAllHouses);
+router.patch("/updateHouse/:id", ownerController.updateHouse);
 
 module.exports = router;

@@ -28,7 +28,25 @@ const getAllHouses = async (req, res) => {
     res.status(500).json({ message: "Failed to get houses" });
   }
 };
+
+// update house info
+const updateHouse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+    const updatedHouse = await houseService.updateHouse(id, updatedData);
+    res.json({
+      status: 200,
+      success: true,
+      message: "House updated successfully",
+      house: updatedHouse,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to edit the house" });
+  }
+};
 module.exports = {
   addHouse,
   getAllHouses,
+  updateHouse,
 };

@@ -17,11 +17,17 @@ async function getAllHouses() {
   try {
     return await House.find().populate("owner");
   } catch (error) {
-    console.log(error);
+    throw new Error("Failed to get houses: " + error.message);
   }
 }
+
+// update house service
+const updateHouse = async (id, updatedData) => {
+  return await House.findByIdAndUpdate(id, updatedData, { new: true });
+};
 
 module.exports = {
   addHouseService,
   getAllHouses,
+  updateHouse,
 };
