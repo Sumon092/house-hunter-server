@@ -1,3 +1,23 @@
+// const userService = require("./user.services");
+
+// async function registerUser(req, res) {
+//   try {
+//     const userData = req.body;
+//     const result = await userService.createUser(userData);
+//     console.log(result);
+//     res.json({
+//       status: 200,
+//       message: "User Created Successful",
+//       success: true,
+//       data: result,
+//     });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// }
+// module.exports = {
+//   registerUser,
+// };
 const userService = require("./user.services");
 
 async function registerUser(req, res) {
@@ -7,14 +27,15 @@ async function registerUser(req, res) {
     console.log(result);
     res.json({
       status: 200,
-      message: "User Created Successful",
+      message: "User Created Successfully",
       success: true,
       data: result,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(409).json({ error: error.message });
   }
 }
+
 module.exports = {
   registerUser,
 };
