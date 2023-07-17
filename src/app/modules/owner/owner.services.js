@@ -26,8 +26,14 @@ const updateHouse = async (id, updatedData) => {
   return await House.findByIdAndUpdate(id, updatedData, { new: true });
 };
 
+// delete house service
+const deleteHouse = async (id) => {
+  return await House.findByIdAndDelete(id);
+};
+
 module.exports = {
   addHouseService,
   getAllHouses,
   updateHouse,
+  deleteHouse,
 };

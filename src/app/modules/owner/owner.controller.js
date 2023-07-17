@@ -5,8 +5,6 @@ async function addHouse(req, res) {
   try {
     const houseData = req.body;
     const userId = req.user._id;
-
-    // const house = await houseService.addHouseService(houseData);
     const house = await houseService.addHouseService(houseData, userId);
 
     res.json({
@@ -25,7 +23,9 @@ const getAllHouses = async (req, res) => {
     const houses = await houseService.getAllHouses();
     res.json({ houses });
   } catch (error) {
-    res.status(500).json({ message: "Failed to get houses" });
+    res
+      .status(500)
+      .json({ message: "Failed to get houses", error: error.message });
   }
 };
 
@@ -45,8 +45,20 @@ const updateHouse = async (req, res) => {
     res.status(500).json({ message: "Failed to edit the house" });
   }
 };
+// delete house controller
+const deleteHouse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await houseService.deleteHouse(id);
+    res.json({ message: "House deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete the house" });
+  }
+};
+
 module.exports = {
   addHouse,
   getAllHouses,
   updateHouse,
+  deleteHouse,
 };
