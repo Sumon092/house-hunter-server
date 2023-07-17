@@ -4,14 +4,11 @@ const House = require("./owner.model.js");
 
 async function addHouseService(houseData, userId) {
   const house = new House(houseData);
-  console.log(house._id);
-
   await house.save();
   const objectId = new mongoose.Types.ObjectId(userId);
   await User.findByIdAndUpdate(objectId, {
     $push: { ownedHouses: house._id },
   });
-  console.log({ objectId });
   const populatedHouse = await House.findById(house._id).populate(
     "ownedHouses"
   );

@@ -7,9 +7,7 @@ async function addHouse(req, res) {
     const houseData = req.body;
     const ownerId = req.user.userId;
     const objectId = new mongoose.Types.ObjectId(ownerId);
-    console.log({ ownerId });
     const house = await houseService.addHouseService(houseData, objectId);
-
     res.json({
       status: 200,
       message: "House added successfully",
