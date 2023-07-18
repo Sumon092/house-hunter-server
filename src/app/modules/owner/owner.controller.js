@@ -102,7 +102,7 @@ const getHouses = async (req, res) => {
 };
 const saveHouse = async (req, res) => {
   const houseData = req.body;
-  const ownerId = req.user.id; // Assuming you have the owner's id from the authenticated user
+  const ownerId = req.user.id; 
   try {
     const savedHouse = await houseService.saveHouse(houseData, ownerId);
     res.status(201).json(savedHouse);
@@ -111,7 +111,7 @@ const saveHouse = async (req, res) => {
   }
 };
 const getHousesByOwner = async (req, res) => {
-  const ownerId = req.user.id; // Assuming you have the owner's id from the authenticated user
+  const ownerId = req.user.id;
   try {
     const houses = await houseService.getHousesByOwner(ownerId);
     res.status(200).json(houses);

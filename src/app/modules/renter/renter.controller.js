@@ -62,7 +62,6 @@ const getHouseByBookingIdController = async (req, res) => {
         .json({ error: "House not found for the given booking ID" });
     }
 
-    // Fetch the house data using the House model
     const house = await House.findById(houseId).exec();
     console.log(house, "house is house");
 
@@ -70,7 +69,7 @@ const getHouseByBookingIdController = async (req, res) => {
       return res.status(404).json({ error: "House not found" });
     }
 
-    res.json(house); // Send the house data as a response
+    res.json(house);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to get house by booking ID" });

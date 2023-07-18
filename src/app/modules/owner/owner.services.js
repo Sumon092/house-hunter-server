@@ -51,16 +51,11 @@ const deleteHouse = async (id) => {
 
 const saveHouse = async (houseData, ownerId) => {
   try {
-    // Find the owner User model based on the ownerId
     const owner = await User.findById(ownerId);
-
-    // Create the new house and set the owner reference
     const newHouse = new House({
       ...houseData,
       owner: ownerId,
     });
-
-    // Save the house and update the owner's ownedHouses array
     const savedHouse = await newHouse.save();
     owner.ownedHouses.push(savedHouse);
     await owner.save();
