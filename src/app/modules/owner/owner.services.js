@@ -14,6 +14,19 @@ async function addHouseService(houseData, userId) {
   );
   return populatedHouse;
 }
+//get paginated house
+const searchHouses = async (filters, page, limit) => {
+  try {
+    const skip = (page - 1) * limit;
+
+    const houses = await House.find(filters).skip(skip).limit(limit);
+
+    return houses;
+  } catch (error) {
+    throw new Error("Failed to fetch houses");
+  }
+};
+
 // get All house by owner
 async function getAllHouses() {
   try {
@@ -38,4 +51,5 @@ module.exports = {
   getAllHouses,
   updateHouse,
   deleteHouse,
+  searchHouses,
 };

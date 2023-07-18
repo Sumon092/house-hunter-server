@@ -44,4 +44,5 @@ async function removeBookingController(req, res) {
   }
 }
 
+
 module.exports = { createBooking, removeBookingController };

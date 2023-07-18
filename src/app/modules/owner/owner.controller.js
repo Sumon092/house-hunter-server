@@ -56,10 +56,55 @@ const deleteHouse = async (req, res) => {
     res.status(500).json({ message: "Failed to delete the house" });
   }
 };
+//get paginated house
+const getHouses = async (req, res) => {
+  try {
+    const {
+      city,
+      bedrooms,
+      bathrooms,
+      roomSize,
+      availability,
+      minRent,
+      maxRent,
+    } = req.query;
+    const filters = {};
+
+    if (city) {
+      filters.city = { $regex: new RegExp(city, "i") };
+    }
+    if (bedrooms) {
+      filters.bedrooms = bedrooms;
+    }
+    if (bathrooms) {
+      filters.bathrooms = bathrooms;
+    }
+    if (roomSize) {
+      filters.roomSize = roomSize;
+    }
+    if (availability) {
+      filters.availability = availability;
+    }
+    if (minRent && maxRent) {
+      filters.rentPerMonth = { $gte: minRent, $lte: maxRent };
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const houses = await houseService.searchHouses(filters, page, limit);
+
+    res.json(houses);
+  } catch (error) {
+    console.error("Failed to fetch houses:", error);
+    res.status(500).json({ error: "Failed to fetch houses" });
+  }
+};
 
 module.exports = {
   addHouse,
   getAllHouses,
   updateHouse,
   deleteHouse,
+  getHouses,
 };
