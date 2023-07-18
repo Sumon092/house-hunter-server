@@ -4,23 +4,65 @@ const Booking = require("./renter.model.js");
 async function createBooking(bookingData) {
   try {
     const { houseRenterId, houseId } = bookingData;
-    const bookingCount = await Booking.countDocuments({ houseRenterId });
+
+    const house = await House.findById(houseId);
+    if (!house) {
+      throw new Error("This House is not found");
+    }
+
+    if (house.booked) {
+      throw new Error("House is already booked");
+    }
+
+    const bookingCount = await Booking.find({
+      houseRenter: houseRenterId,
+    }).count();
     if (bookingCount >= 2) {
       throw new Error("Maximum booking limit reached");
     }
-    const house = await House.findByIdAndUpdate(houseId, {
-      booked: true,
-      houseRenter: houseRenterId,
-    });
-    if (!house) {
-      throw new Error("House not found");
-    }
+
+    house.booked = true;
+    house.houseRenter = houseRenterId;
+    await house.save();
 
     const booking = await Booking.create(bookingData);
     return booking;
   } catch (error) {
-    throw new Error("Failed to create booking");
+    throw new Error(error.message);
   }
 }
 
-module.exports = { createBooking };
+// remove booking
+async function removeBookingService(bookingId) {
+  try {
+    const booking = await Booking.findById(bookingId).populate("house");
+
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+
+    // const { houseId,house } = booking;
+    const house = await House.findById(houseId);
+    console.log({ house });
+
+    if (!house) {
+      throw new Error("Associated house not found");
+    }
+
+    house.booked = false;
+    house.houseRenter = null;
+    await house.save();
+
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      throw new Error("Failed to delete booking" + error.message);
+    }
+
+    return deletedBooking;
+  } catch (error) {
+    throw new Error("errrr ..." + error.message);
+  }
+}
+
+module.exports = { createBooking, removeBookingService };

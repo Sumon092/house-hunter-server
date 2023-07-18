@@ -1,13 +1,12 @@
 const { default: mongoose } = require("mongoose");
 const bookingServices = require("./renter.services");
+const Booking = require("./renter.model");
 
 async function createBooking(req, res) {
   try {
     const { name, email, phoneNumber, houseRenterId, houseId } = req.body;
-
     const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
     const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
-    console.log(name, email, phoneNumber, houseRentObjectId, houseIdObjectId);
     const bookingData = {
       name,
       email,
@@ -23,5 +22,27 @@ async function createBooking(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+//remove booking
+async function removeBookingController(req, res) {
+  try {
+    const { bookingId } = req.params;
 
-module.exports = { createBooking };
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+      throw new Error("Invalid bookingId");
+    }
+
+    const deletedBooking = await bookingServices.removeBookingService(
+      bookingId
+    );
+
+    res.json({
+      success: true,
+      message: "Booking removed",
+      delete: deletedBooking,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { createBooking, removeBookingController };
