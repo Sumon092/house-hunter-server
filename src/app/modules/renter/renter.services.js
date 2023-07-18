@@ -36,32 +36,20 @@ async function createBooking(bookingData) {
 async function removeBookingService(bookingId) {
   try {
     const booking = await Booking.findById(bookingId).populate("house");
+    console.log({ bookingId });
 
     if (!booking) {
       throw new Error("Booking not found");
     }
-
-    // const { houseId,house } = booking;
-    const house = await House.findById(houseId);
-    console.log({ house });
-
-    if (!house) {
-      throw new Error("Associated house not found");
-    }
-
-    house.booked = false;
-    house.houseRenter = null;
-    await house.save();
-
     const deletedBooking = await Booking.findByIdAndDelete(bookingId);
 
     if (!deletedBooking) {
-      throw new Error("Failed to delete booking" + error.message);
+      throw new Error("Failed to delete booking");
     }
 
     return deletedBooking;
   } catch (error) {
-    throw new Error("errrr ..." + error.message);
+    throw new Error("Failed to delete booking");
   }
 }
 
