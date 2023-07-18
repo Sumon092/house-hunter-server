@@ -3,16 +3,18 @@ const Booking = require("./renter.model.js");
 
 async function createBooking(bookingData) {
   try {
-    const { houseRenter, houseId } = bookingData;
-    const bookingCount = await Booking.countDocuments({ houseRenter });
+    const { houseRenterId, houseId } = bookingData;
+    const bookingCount = await Booking.countDocuments({ houseRenterId });
     if (bookingCount >= 2) {
       throw new Error("Maximum booking limit reached");
     }
-    await House.findByIdAndUpdate(
-      houseId,
-      { booked: true, houseRenter },
-      { new: true }
-    );
+    const house = await House.findByIdAndUpdate(houseId, {
+      booked: true,
+      houseRenter: houseRenterId,
+    });
+    if (!house) {
+      throw new Error("House not found");
+    }
 
     const booking = await Booking.create(bookingData);
     return booking;

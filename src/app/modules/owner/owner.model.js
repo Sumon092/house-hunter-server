@@ -51,7 +51,15 @@ const houseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  booked: {
+    type: Boolean,
+    default: false,
+  },
   ownedHouses: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  houseRenter: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "HouseRenter",
+  },
 });
 
 const House = mongoose.model("House", houseSchema);

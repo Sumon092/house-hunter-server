@@ -13,14 +13,15 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  booked: {
-    type: Boolean,
-    default: false,
+  houseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "House",
+    required: true,
   },
-  houseRenter: {
+  houseRenterId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "HouseRenter",
-    default: null,
+    required: true,
   },
 });
 
