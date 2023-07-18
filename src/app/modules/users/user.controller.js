@@ -5,7 +5,6 @@ async function registerUser(req, res) {
   try {
     const userData = req.body;
     const result = await userService.createUser(userData);
-    console.log(result);
     res.json({
       status: 200,
       message: "User Created Successfully",

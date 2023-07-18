@@ -29,7 +29,6 @@ async function removeBookingController(req, res) {
     if (!mongoose.Types.ObjectId.isValid(bookingId)) {
       throw new Error("Invalid bookingId");
     }
-    console.log({ bookingId });
     const deletedBooking = await bookingServices.removeBookingService(
       bookingId
     );

@@ -36,7 +36,6 @@ async function createBooking(bookingData) {
 async function removeBookingService(bookingId) {
   try {
     const booking = await Booking.findById(bookingId).populate("house");
-    console.log({ bookingId });
 
     if (!booking) {
       throw new Error("Booking not found");
