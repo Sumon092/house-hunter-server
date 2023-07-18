@@ -2,42 +2,10 @@ const { default: mongoose } = require("mongoose");
 const bookingServices = require("./renter.services");
 const Booking = require("./renter.model");
 const House = require("../owner/owner.model");
-//TODO
-// async function createBooking(req, res) {
-//   try {
-//     const { name, email, phoneNumber, houseRenterId, houseId } = req.body;
-//     const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
-//     const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
-//     const bookingData = {
-//       name,
-//       email,
-//       phoneNumber,
-//       houseRenterId: houseRentObjectId,
-//       houseId: houseIdObjectId,
-//     };
-
-//     const booking = await bookingServices.createBooking(bookingData);
-
-//     res.json({
-//       status: 200,
-//       booking,
-//     });
-//   } catch (error) {
-//     res.json({
-//       status: 500,
-//       error: error.message,
-//     });
-//   }
-// }
-//remove booking
-//*
 
 async function createBooking(req, res) {
   try {
     const { name, email, phoneNumber, houseRenterId, houseId } = req.body;
-    console.log("name email ph hid", name, email, phoneNumber, houseId);
-    // const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
-    // const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
     const bookingData = {
       name,
       email,
@@ -47,7 +15,6 @@ async function createBooking(req, res) {
     };
 
     const booking = await bookingServices.createBooking(bookingData);
-    console.log("booking data are", booking);
 
     res.json({
       status: 200,
@@ -60,7 +27,7 @@ async function createBooking(req, res) {
     });
   }
 }
-//*
+
 const cancelBookingController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -85,7 +52,6 @@ const getHouseByBookingIdController = async (req, res) => {
     }
 
     const house = await House.findById(houseId).exec();
-    console.log(house, "house is house");
 
     if (!house) {
       return res.json({
@@ -106,7 +72,6 @@ const getHouseByBookingIdController = async (req, res) => {
 const getAllBookingsByHouseRenterController = async (req, res) => {
   try {
     const houseRenterId = req.user.userId;
-    // console.log(houseRenterId, "house renter user");
     const bookings = await bookingServices.getAllBookingsByHouseRenter(
       houseRenterId
     );
