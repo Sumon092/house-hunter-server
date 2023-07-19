@@ -35,7 +35,7 @@ async function login(req, res) {
 //get user
 const getUserById = async (req, res) => {
   try {
-    const userId = req.decoded; // Assuming you set req.decoded in the verifyToken middleware
+    const userId = req.decoded; 
     const user = await userService.findUserById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
