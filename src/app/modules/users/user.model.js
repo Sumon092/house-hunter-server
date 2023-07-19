@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
   },
   ownedHouses: [{ type: mongoose.Schema.Types.ObjectId, ref: "House" }],
   rentedHouses: [{ type: mongoose.Schema.Types.ObjectId, ref: "House" }],
+  rentedBookingCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

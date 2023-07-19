@@ -23,6 +23,7 @@ const bookingSchema = new mongoose.Schema({
     ref: "HouseRenter",
     required: true,
   },
+  
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);

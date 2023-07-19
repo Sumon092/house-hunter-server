@@ -2,21 +2,52 @@ const { default: mongoose } = require("mongoose");
 const bookingServices = require("./renter.services");
 const Booking = require("./renter.model");
 const House = require("../owner/owner.model");
+//TODO
+// async function createBooking(req, res) {
+//   try {
+//     const { name, email, phoneNumber, houseRenterId, houseId } = req.body;
+//     const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
+//     const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
+//     const bookingData = {
+//       name,
+//       email,
+//       phoneNumber,
+//       houseRenterId: houseRentObjectId,
+//       houseId: houseIdObjectId,
+//     };
+
+//     const booking = await bookingServices.createBooking(bookingData);
+
+//     res.json({
+//       status: 200,
+//       booking,
+//     });
+//   } catch (error) {
+//     res.json({
+//       status: 500,
+//       error: error.message,
+//     });
+//   }
+// }
+//remove booking
+//*
 
 async function createBooking(req, res) {
   try {
     const { name, email, phoneNumber, houseRenterId, houseId } = req.body;
-    const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
-    const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
+    console.log("name email ph hid", name, email, phoneNumber, houseId);
+    // const houseRentObjectId = new mongoose.Types.ObjectId(houseRenterId);
+    // const houseIdObjectId = new mongoose.Types.ObjectId(houseId);
     const bookingData = {
       name,
       email,
       phoneNumber,
-      houseRenterId: houseRentObjectId,
-      houseId: houseIdObjectId,
+      houseRenterId,
+      houseId,
     };
 
     const booking = await bookingServices.createBooking(bookingData);
+    console.log("booking data are", booking);
 
     res.json({
       status: 200,
@@ -29,13 +60,12 @@ async function createBooking(req, res) {
     });
   }
 }
-//remove booking
+//*
 const cancelBookingController = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id, "booking id controller");
-    await bookingServices.cancelBooking(id); //
-    res.json({ message: "Booking cancelled successfully" });
+    const deletedBooking = await bookingServices.cancelBooking(id);
+    res.json({ message: "Booking cancelled successfully", deletedBooking });
   } catch (error) {
     res.json({
       status: 500,
