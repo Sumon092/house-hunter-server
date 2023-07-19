@@ -19,7 +19,11 @@ async function createUser(userData) {
       password: hashedPassword,
     });
     await user.save();
-    return user;
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN_SECRET
+    );
+    return { user, token };
   } catch (error) {
     throw new Error(error.message);
   }
