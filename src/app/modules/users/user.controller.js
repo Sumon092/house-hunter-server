@@ -20,12 +20,14 @@ async function registerUser(req, res) {
 async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const token = await userService.loginUser(email, password);
+    const { token, role } = await userService.loginUser(email, password);
+
     res.json({
       status: 200,
       success: true,
       message: "Login successful",
       token,
+      role,
     });
   } catch (error) {
     res.status(401).json({ message: error.message });
@@ -35,7 +37,7 @@ async function login(req, res) {
 //get user
 const getUserById = async (req, res) => {
   try {
-    const userId = req.decoded; 
+    const userId = req.decoded;
     const user = await userService.findUserById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });

@@ -63,5 +63,4 @@ const houseSchema = new mongoose.Schema({
 });
 
 const House = mongoose.model("House", houseSchema);
-
 module.exports = House;

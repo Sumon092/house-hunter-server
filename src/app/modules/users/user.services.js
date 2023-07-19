@@ -40,7 +40,9 @@ async function loginUser(email, password) {
     throw new Error("Invalid email or password");
   }
   const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
-  return token;
+  const role = user.role; // Assuming the User model has a 'role' property
+
+  return { token, role };
 }
 // get user
 const findUserById = async (userId) => {

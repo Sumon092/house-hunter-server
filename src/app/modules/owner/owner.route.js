@@ -8,5 +8,7 @@ router.get("/getHouse", ownerController.getAllHouses);
 router.get("/houses", ownerController.getHouses);
 router.patch("/updateHouse/:id", ownerController.updateHouse);
 router.delete("/deleteHouse/:id", ownerController.deleteHouse);
+router.post("/savehouse/",verifyToken, ownerController.saveHouse);
+router.get("/gethousebyonwer/:id", ownerController.getHousesByOwner);
 
 module.exports = router;

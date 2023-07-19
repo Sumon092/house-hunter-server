@@ -51,5 +51,32 @@ async function removeBookingService(bookingId) {
     throw new Error("Failed to delete booking");
   }
 }
+const getHouseByBookingId = async (bookingId) => {
+  try {
+    const booking = await Booking.findById(bookingId).exec();
+    console.log("booking is ", booking.houseId);
+    if (!booking) {
+      return null;
+    }
+    return booking.houseId;
+  } catch (error) {
+    throw new Error("Failed to get house by booking ID");
+  }
+};
+const getAllBookingsByHouseRenter = async (houseRenterId) => {
+  try {
+    const bookings = await Booking.find({ houseRenterId }).exec();
+    console.log(bookings, "house booking");
 
-module.exports = { createBooking, removeBookingService };
+    return bookings;
+  } catch (error) {
+    throw new Error("Failed to get bookings by houseRenter: " + error.message);
+  }
+};
+
+module.exports = {
+  createBooking,
+  removeBookingService,
+  getHouseByBookingId,
+  getAllBookingsByHouseRenter,
+};

@@ -19,7 +19,10 @@ const searchHouses = async (filters, page, limit) => {
   try {
     const skip = (page - 1) * limit;
 
-    const houses = await House.find(filters).skip(skip).limit(limit);
+    const houses = await House.find(filters)
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit);
 
     return houses;
   } catch (error) {
@@ -46,10 +49,42 @@ const deleteHouse = async (id) => {
   return await House.findByIdAndDelete(id);
 };
 
+const saveHouse = async (houseData, ownerId) => {
+  try {
+    // Find the owner User model based on the ownerId
+    const owner = await User.findById(ownerId);
+
+    // Create the new house and set the owner reference
+    const newHouse = new House({
+      ...houseData,
+      owner: ownerId,
+    });
+
+    // Save the house and update the owner's ownedHouses array
+    const savedHouse = await newHouse.save();
+    owner.ownedHouses.push(savedHouse);
+    await owner.save();
+
+    return savedHouse;
+  } catch (error) {
+    throw new Error("Failed to save house data");
+  }
+};
+const getHousesByOwner = async (ownerId) => {
+  try {
+    const houses = await House.find({ owner: ownerId }).populate("owner");
+    return houses;
+  } catch (error) {
+    throw new Error("Failed to get houses by owner");
+  }
+};
+
 module.exports = {
   addHouseService,
   getAllHouses,
   updateHouse,
   deleteHouse,
   searchHouses,
+  saveHouse,
+  getHousesByOwner
 };

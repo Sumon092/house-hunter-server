@@ -1,7 +1,5 @@
-// const express = require("express");
 const mongoose = require("mongoose");
 const app = require("./app.js");
-const config = require("./config/index.js");
 const port = 5000;
 
 async function main() {

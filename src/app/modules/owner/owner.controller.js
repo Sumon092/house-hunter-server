@@ -100,6 +100,25 @@ const getHouses = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch houses" });
   }
 };
+const saveHouse = async (req, res) => {
+  const houseData = req.body;
+  const ownerId = req.user.id; // Assuming you have the owner's id from the authenticated user
+  try {
+    const savedHouse = await houseService.saveHouse(houseData, ownerId);
+    res.status(201).json(savedHouse);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to save house data" });
+  }
+};
+const getHousesByOwner = async (req, res) => {
+  const ownerId = req.user.id; // Assuming you have the owner's id from the authenticated user
+  try {
+    const houses = await houseService.getHousesByOwner(ownerId);
+    res.status(200).json(houses);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get houses by owner" });
+  }
+};
 
 module.exports = {
   addHouse,
@@ -107,4 +126,6 @@ module.exports = {
   updateHouse,
   deleteHouse,
   getHouses,
+  saveHouse,
+  getHousesByOwner,
 };
