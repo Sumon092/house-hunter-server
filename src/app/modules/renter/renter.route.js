@@ -4,10 +4,7 @@ const bookingController = require("./renter.controller");
 
 const router = express.Router();
 
-router.delete(
-  "/removeBooking/:bookingId",
-  bookingController.removeBookingController
-);
+router.delete("/cancel-booking/:id", bookingController.cancelBookingController);
 router.post("/addBooking", verifyToken, bookingController.createBooking);
 router.get(
   "/booked/:bookingId",

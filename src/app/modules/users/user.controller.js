@@ -12,7 +12,10 @@ async function registerUser(req, res) {
       data: result,
     });
   } catch (error) {
-    res.status(409).json({ error: error.message });
+    res.json({
+      status: 409,
+      error: error.message,
+    });
   }
 }
 
@@ -30,7 +33,10 @@ async function login(req, res) {
       role,
     });
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    res.json({
+      status: 401,
+      message: error.message,
+    });
   }
 }
 
@@ -40,11 +46,17 @@ const getUserById = async (req, res) => {
     const userId = req.decoded;
     const user = await userService.findUserById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.json({
+        status: 404,
+        message: "User not found",
+      });
     }
     return res.json(user);
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.json({
+      status: 500,
+      message: "Internal Server Error",
+    });
   }
 };
 

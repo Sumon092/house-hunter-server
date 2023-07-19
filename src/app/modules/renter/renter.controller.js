@@ -18,37 +18,29 @@ async function createBooking(req, res) {
 
     const booking = await bookingServices.createBooking(bookingData);
 
-    res.status(201).json(booking);
+    res.json({
+      status: 200,
+      booking,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json({
+      status: 500,
+      error: error.message,
+    });
   }
 }
 //remove booking
-async function removeBookingController(req, res) {
+const cancelBookingController = async (req, res) => {
   try {
-    const { bookingId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
-      throw new Error("Invalid bookingId");
-    }
-    const deletedBooking = await bookingServices.removeBookingService(
-      bookingId
-    );
-
+    const { id } = req.params;
+    console.log(id, "booking id controller");
+    await bookingServices.cancelBooking(id); //
+    res.json({ message: "Booking cancelled successfully" });
+  } catch (error) {
     res.json({
-      success: true,
-      message: "Booking removed",
-      delete: deletedBooking,
+      status: 500,
+      error: error.message,
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-const getBookedHouse = async (req, res) => {
-  try {
-    const bookings = await Booking.find();
-    res.json(bookings);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to get bookings" });
   }
 };
 
@@ -66,33 +58,40 @@ const getHouseByBookingIdController = async (req, res) => {
     console.log(house, "house is house");
 
     if (!house) {
-      return res.status(404).json({ error: "House not found" });
+      return res.json({
+        status: 404,
+        error: "House not found",
+      });
     }
 
     res.json(house);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to get house by booking ID" });
+    res.json({
+      status: 500,
+      error: "Failed to get house by booking ID",
+    });
   }
 };
 const getAllBookingsByHouseRenterController = async (req, res) => {
   try {
-    console.log("User", req.user);
     const houseRenterId = req.user.userId;
-    console.log(houseRenterId, "house renter user");
+    // console.log(houseRenterId, "house renter user");
     const bookings = await bookingServices.getAllBookingsByHouseRenter(
       houseRenterId
     );
-    console.log(bookings, "from controller");
     res.json(bookings);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json({
+      status: 500,
+      error: error.message,
+    });
   }
 };
 
 module.exports = {
   createBooking,
-  removeBookingController,
+  cancelBookingController,
   getHouseByBookingIdController,
   getAllBookingsByHouseRenterController,
 };

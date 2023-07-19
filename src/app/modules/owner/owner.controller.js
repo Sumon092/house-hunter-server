@@ -15,7 +15,9 @@ async function addHouse(req, res) {
       data: house,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.json({ 
+      status:401,
+      error: error.message });
   }
 }
 // get all house
@@ -43,7 +45,9 @@ const updateHouse = async (req, res) => {
       house: updatedHouse,
     });
   } catch (error) {
-    res.status(500).json({ message: "Failed to edit the house" });
+    res.json({ 
+      status:500,
+      error: error.message });
   }
 };
 // delete house controller
@@ -53,7 +57,9 @@ const deleteHouse = async (req, res) => {
     await houseService.deleteHouse(id);
     res.json({ message: "House deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete the house" });
+    res.json({ 
+      status:500,
+      error: error.message });
   }
 };
 //get paginated house
@@ -97,7 +103,9 @@ const getHouses = async (req, res) => {
     res.json(houses);
   } catch (error) {
     console.error("Failed to fetch houses:", error);
-    res.status(500).json({ error: "Failed to fetch houses" });
+    res.json({ 
+      status:500,
+      error: "Failed to fetch houses" });
   }
 };
 const saveHouse = async (req, res) => {
@@ -105,18 +113,26 @@ const saveHouse = async (req, res) => {
   const ownerId = req.user.id; 
   try {
     const savedHouse = await houseService.saveHouse(houseData, ownerId);
-    res.status(201).json(savedHouse);
+    res.json({
+      status:200,
+      savedHouse});
   } catch (error) {
-    res.status(500).json({ message: "Failed to save house data" });
+    res.json({ 
+      status:500,
+      message: "Failed to save house data" });
   }
 };
 const getHousesByOwner = async (req, res) => {
   const ownerId = req.user.id;
   try {
     const houses = await houseService.getHousesByOwner(ownerId);
-    res.status(200).json(houses);
+    res.json({
+      status:200,
+      houses});
   } catch (error) {
-    res.status(500).json({ message: "Failed to get houses by owner" });
+    res.json({
+      status:500,
+      message: "Failed to get houses by owner" });
   }
 };
 

@@ -32,25 +32,9 @@ async function createBooking(bookingData) {
   }
 }
 
-// remove booking
-async function removeBookingService(bookingId) {
-  try {
-    const booking = await Booking.findById(bookingId).populate("house");
-
-    if (!booking) {
-      throw new Error("Booking not found");
-    }
-    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
-
-    if (!deletedBooking) {
-      throw new Error("Failed to delete booking");
-    }
-
-    return deletedBooking;
-  } catch (error) {
-    throw new Error("Failed to delete booking");
-  }
-}
+const cancelBooking = async (id) => {
+  return await Booking.findByIdAndDelete(id);
+};
 const getHouseByBookingId = async (bookingId) => {
   try {
     const booking = await Booking.findById(bookingId).exec();
@@ -76,7 +60,7 @@ const getAllBookingsByHouseRenter = async (houseRenterId) => {
 
 module.exports = {
   createBooking,
-  removeBookingService,
+  cancelBooking,
   getHouseByBookingId,
   getAllBookingsByHouseRenter,
 };
