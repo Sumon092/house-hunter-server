@@ -29,7 +29,7 @@ async function createUser(userData) {
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Invalid email or password");
+    throw new Error(401, "Invalid email or password");
   }
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
@@ -38,8 +38,18 @@ async function loginUser(email, password) {
   const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
   return token;
 }
+// get user
+const findUserById = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    return user;
+  } catch (error) {
+    throw new Error("Error finding user by ID");
+  }
+};
 
 module.exports = {
   createUser,
   loginUser,
+  findUserById,
 };

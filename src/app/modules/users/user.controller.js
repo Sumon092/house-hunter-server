@@ -32,7 +32,22 @@ async function login(req, res) {
   }
 }
 
+//get user
+const getUserById = async (req, res) => {
+  try {
+    const userId = req.decoded; // Assuming you set req.decoded in the verifyToken middleware
+    const user = await userService.findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.json(user);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   registerUser,
   login,
+  getUserById,
 };
